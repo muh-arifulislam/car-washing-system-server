@@ -15,13 +15,14 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const loginUser = catchAsync(async (req, res) => {
-  const result = await AuthServices.loginUserIntoDB(req.body);
+  const { token, data } = await AuthServices.loginUserIntoDB(req.body);
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: "User login successful",
-    data: result,
+    token,
+    data: data,
   });
 });
 
