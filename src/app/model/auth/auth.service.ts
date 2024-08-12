@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import AppError from "../../errors/AppError";
 import { jwtHelper } from "../../utils/jwtHelper";
 import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
@@ -23,7 +25,7 @@ const loginUserIntoDB = async (payload: TLoginUser) => {
     user.password
   );
   if (!isPasswordMatched) {
-    throw new Error("password is incorrect");
+    throw new AppError(httpStatus.FORBIDDEN, "Password is incorrect");
   }
 
   const token = jwtHelper.generateAccessToken({
