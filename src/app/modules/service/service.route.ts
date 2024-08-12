@@ -31,4 +31,10 @@ router.delete(
   ServiceControllers.deleteOneService
 );
 
+router.post(
+  "/slots",
+  validateAuth(USER_ROLE.admin),
+  ServiceControllers.createServiceSlotes
+);
+
 export const ServiceRoutes = router;
