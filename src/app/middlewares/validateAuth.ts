@@ -38,6 +38,9 @@ const validateAuth = (...requiredRoles: TUserRole[]) => {
       );
     }
 
+    //set user to req
+    req.user = user;
+
     next();
   });
 };

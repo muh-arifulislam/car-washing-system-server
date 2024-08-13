@@ -12,18 +12,17 @@ const createUserIntoDB = async (payload: TUser) => {
 };
 
 const loginUserIntoDB = async (payload: TLoginUser) => {
-  const user = await User.findOne({ email: payload.email });
+  const user = await User.findOne({ email: payload.email }).select("+password");
 
   //check if user is exists
   if (!user) {
     throw new Error("User not found");
   }
 
+  const { password, ...restUserData } = user.toObject();
+
   //check if password is matched
-  const isPasswordMatched = await bcrypt.compare(
-    payload.password,
-    user.password
-  );
+  const isPasswordMatched = await bcrypt.compare(payload.password, password);
   if (!isPasswordMatched) {
     throw new AppError(httpStatus.FORBIDDEN, "Password is incorrect");
   }
@@ -35,7 +34,7 @@ const loginUserIntoDB = async (payload: TLoginUser) => {
 
   return {
     token,
-    data: user,
+    data: restUserData,
   };
 };
 

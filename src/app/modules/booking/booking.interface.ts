@@ -19,6 +19,16 @@ export type TBooking = {
   vehicleType: TVehicleType;
   vehicleBrand: string;
   vehicleModel: string;
-  manufacturingYear: string;
+  manufacturingYear: number;
+  registrationPlate: string;
+};
+
+export type TBookingInput = {
+  serviceId: Types.ObjectId;
+  slotId: Types.ObjectId;
+  vehicleType: TVehicleType;
+  vehicleBrand: string;
+  vehicleModel: string;
+  manufacturingYear: number;
   registrationPlate: string;
 };
