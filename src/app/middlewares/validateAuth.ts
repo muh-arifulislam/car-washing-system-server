@@ -12,7 +12,7 @@ const validateAuth = (...requiredRoles: TUserRole[]) => {
 
     //check if token is available
     if (!token) {
-      throw new AppError(httpStatus.UNAUTHORIZED, "unauthorized access!");
+      throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized Access!");
     }
 
     const decoded = jwt.verify(
@@ -27,7 +27,7 @@ const validateAuth = (...requiredRoles: TUserRole[]) => {
       email,
     });
     if (!user) {
-      throw new AppError(httpStatus.UNAUTHORIZED, "unauthorized access!");
+      throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized Access!");
     }
 
     //check user role

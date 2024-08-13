@@ -5,8 +5,27 @@ import { TBooking, TBookingInput } from "./booking.interface";
 import { Booking } from "./booking.model";
 import AppError from "../../errors/AppError";
 import { TUser } from "../user/user.interface";
+import { Service } from "../service/service.model";
+import httpStatus from "http-status";
 
 const bookServiceIntoDB = async (user: TUser, payload: TBookingInput) => {
+  //check if service exits
+  const service = await Service.findById(payload.serviceId);
+  if (!service) {
+    throw new AppError(httpStatus.NOT_FOUND, "Data not found!");
+  }
+
+  //check if slot exits
+  const slot = await Slot.findById(payload.slotId);
+  if (!slot) {
+    throw new AppError(httpStatus.NOT_FOUND, "Data not found!");
+  }
+
+  //check is slot is available
+  if (!(slot.isBooked === "available")) {
+    throw new AppError(httpStatus.FORBIDDEN, "Slot already booked!");
+  }
+
   const session = await startSession();
 
   const bookingDoc: TBooking = {

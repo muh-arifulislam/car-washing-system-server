@@ -14,7 +14,7 @@ const handleDuplicateError = (error: Error) => {
   ];
   return {
     statusCode: 400,
-    message: error.message,
+    message: "Duplicate Error",
     errorMessages,
   };
 };

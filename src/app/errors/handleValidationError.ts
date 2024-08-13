@@ -3,7 +3,6 @@ import { TErrorSources } from "../interface";
 
 const handleValidationError = (error: Error.ValidationError) => {
   const statusCode = 400;
-  const message = "validation error";
 
   const errorSources: TErrorSources[] = Object.keys(error?.errors).map(
     (err: string) => ({
@@ -13,7 +12,7 @@ const handleValidationError = (error: Error.ValidationError) => {
   );
 
   return {
-    message,
+    message: "Validation Error",
     statusCode,
     errorSources,
   };

@@ -4,6 +4,7 @@ import validateRequest from "../../middlewares/validateRequest";
 import { ServiceValidations } from "./service.validation";
 import validateAuth from "../../middlewares/validateAuth";
 import { USER_ROLE } from "../user/user.constant";
+import { SlotValidations } from "../slot/slot.validation";
 
 const router = Router();
 
@@ -34,6 +35,7 @@ router.delete(
 router.post(
   "/slots",
   validateAuth(USER_ROLE.admin),
+  validateRequest(SlotValidations.createSlotSchema),
   ServiceControllers.createServiceSlotes
 );
 

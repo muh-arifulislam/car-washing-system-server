@@ -16,7 +16,7 @@ const globalErrorHandler: ErrorRequestHandler = (
   next: NextFunction
 ) => {
   //default values
-  let statusCode = 500;
+  let statusCode = err.statusCode || 500;
   let message = err.message || "something went wrong";
 
   let errorMessages: TErrorSources[] = [

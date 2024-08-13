@@ -16,7 +16,7 @@ const loginUserIntoDB = async (payload: TLoginUser) => {
 
   //check if user is exists
   if (!user) {
-    throw new Error("User not found");
+    throw new AppError(httpStatus.NOT_FOUND, "No Data Found!");
   }
 
   const { password, ...restUserData } = user.toObject();

@@ -6,6 +6,7 @@ import { TSlot, TSloteSchedule } from "../slot/slot.interface";
 import dayjs from "dayjs";
 import { Slot } from "../slot/slot.model";
 import { SLOT_STATUS } from "../slot/slot.constant";
+import minutesToHour from "../../utils/minutesToHour";
 
 const createServiceIntoDB = async (payload: TService) => {
   const result = await Service.create(payload);
@@ -30,6 +31,12 @@ const getAllFromDB = async () => {
 };
 
 const updateOneIntoDB = async (id: string, payload: Partial<TService>) => {
+  //check if service is exits
+  const service = await Service.findById(id);
+  if (!service) {
+    throw new AppError(httpStatus.NOT_FOUND, "Data not found!");
+  }
+
   const result = await Service.findByIdAndUpdate(id, payload, {
     runValidators: true,
     new: true,
@@ -39,6 +46,12 @@ const updateOneIntoDB = async (id: string, payload: Partial<TService>) => {
 };
 
 const deleteOneIntoDB = async (id: string) => {
+  //check if service is exits
+  const service = await Service.findById(id);
+  if (!service) {
+    throw new AppError(httpStatus.NOT_FOUND, "Data not found!");
+  }
+
   const result = await Service.findByIdAndUpdate(
     id,
     {
@@ -55,37 +68,37 @@ const deleteOneIntoDB = async (id: string) => {
 const createServiceSlotesIntoDB = async (payload: TSloteSchedule) => {
   const service = await Service.findOne({ _id: payload.service });
 
+  //check if service exits
   if (!service) {
     throw new AppError(httpStatus.NOT_FOUND, "No data found");
   }
 
-  // Combine the date with start and end times
-  const start = dayjs(`${payload.date}T${payload.startTime}`);
-  const end = dayjs(`${payload.date}T${payload.endTime}`);
+  //check if service is deleted
+  if (service.isDeleted) {
+    throw new AppError(httpStatus.NOT_FOUND, "No data found");
+  }
 
-  // Convert start time to minutes since start of the day
-  const startMinutes = start.hour() * 60 + start.minute();
+  //convert time into datetime
+  const startTime = dayjs(`${payload.date}T${payload.startTime}`);
+  const endTime = dayjs(`${payload.date}T${payload.endTime}`);
 
-  // Convert end time to minutes since start of the day
-  const endMinutes = end.hour() * 60 + end.minute();
+  //convert date time into minutes
+  const startTimeInMinutes = startTime.hour() * 60 + startTime.minute();
+  const endTimeInMinutes = endTime.hour() * 60 + endTime.minute();
 
   // Calculate the total duration in minutes
-  const totalDuration = endMinutes - startMinutes;
+  const totalDuration = endTimeInMinutes - startTimeInMinutes;
 
-  // calculate slots
-  const totalSlots = totalDuration / service.duration;
+  // calculate total slots
+  const totalSlotsNo = totalDuration / service.duration;
 
-  let currentSlot = 1;
-  let currentStartTime = startMinutes;
+  let currentSlotNo = 1;
+  let currentStartTime = startTimeInMinutes;
 
-  const slotDocs: TSlot[] = [];
+  const slotesDocs: TSlot[] = [];
 
-  const minutesToHour = (minutes: number) => {
-    return dayjs().startOf("day").add(minutes, "minute").format("HH:mm");
-  };
-
-  while (currentSlot <= totalSlots) {
-    slotDocs.push({
+  while (currentSlotNo <= totalSlotsNo) {
+    slotesDocs.push({
       startTime: minutesToHour(currentStartTime),
       endTime: minutesToHour(currentStartTime + service.duration),
       date: payload.date,
@@ -94,10 +107,10 @@ const createServiceSlotesIntoDB = async (payload: TSloteSchedule) => {
     });
 
     currentStartTime += service.duration;
-    currentSlot += 1;
+    currentSlotNo += 1;
   }
 
-  const result = await Slot.insertMany(slotDocs);
+  const result = await Slot.insertMany(slotesDocs);
   return result;
 };
 

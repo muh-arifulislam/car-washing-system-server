@@ -46,7 +46,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// set '' after saving password
+// exclude password field after saving password from result
 userSchema.post("save", function (doc, next) {
   doc.password = "";
   next();
