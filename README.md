@@ -1,6 +1,6 @@
 ##### live-hosting: <https://car-washing-system-server.vercel.app/>
 
-##### postman-document: <https://documenter.getpostman.com/view/29627960/2sA2r3amLL>
+##### postman-document: <https://documenter.getpostman.com/view/29627960/2sA3s6EUfy>
 
 # Getting started
 
@@ -52,44 +52,45 @@ To get the Node server running locally:
 
 - Fields:
   - \_id (PK)
-  - title
-  - price
-  - author
-  - releaseDate
-  - isbn
-  - genre
-  - publisher
-  - series
-  - language
-  - pageCount
-  - quantity
-- bookFormat
+  - name
+  - email
+  - password
+  - phone
+  - role
+  - address
 
 #### Service
 
 - Fields:
   - \_id (PK)
-  - productId (FK
-  - quantity
-  - buyerName
-  - dateOfSale
-  - totalPrice
+  - name
+  - description
+  - price
+  - duration
+  - isDeleted
 
 #### Slot
 
 - Fields:
   - \_id (PK)
-  - email
-  - password
-  - role
+  - service (FK)
+  - date
+  - startTime
+  - endTime
+  - isBooked
 
 #### Booking
 
 - Fields:
   - \_id (PK)
-  - email
-  - password
-  - role
+  - customer (FK)
+  - service (FK)
+  - slot (FK)
+  - vehicleType
+  - vehicleBrand
+  - vehicleModel
+  - manufacturingYear
+  - registrationPlate
 
 ![ER Diagram](./er-diagram.png)
 
@@ -114,9 +115,9 @@ To get the Node server running locally:
 
 ```json
 {
-  "name": "Programming Hero",
-  "email": "web@programming-hero.com",
-  "password": "ph-password",
+  "name": "Md. Ariful Islam",
+  "email": "arifibnenam@gmail.com",
+  "password": "admin-password",
   "phone": "1234567890",
   "role": "admin", //role can be user or admin
   "address": "123 Main Street, City, Country"
@@ -132,13 +133,13 @@ To get the Node server running locally:
   "message": "User registered successfully",
   "data": {
     "_id": "60629b8e8cfcd926384b6e5e",
-    "name": "Programming Hero",
-    "email": "web@programming-hero.com",
+    "name": "Md. Ariful Islam",
+    "email": "arifibnenam@gmail.com",
     "phone": "1234567890",
     "role": "admin",
     "address": "123 Main Street, City, Country",
-    "createdAt": "2024-06-15T12:00:00Z", // For this, ensure that your model includes the option to enable timestamps
-    "updatedAt": "2024-06-15T12:00:00Z" // For this, ensure that your model includes the option to enable timestamps
+    "createdAt": "2024-06-15T12:00:00Z",
+    "updatedAt": "2024-06-15T12:00:00Z"
   }
 }
 ```
@@ -162,8 +163,8 @@ To get the Node server running locally:
 
 ```json
 {
-  "email": "web@programming-hero.com",
-  "password": "ph-password"
+  "email": "arifibnenam@gmail.com",
+  "password": "admin-password"
 }
 ```
 
@@ -177,13 +178,13 @@ To get the Node server running locally:
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MDYyOWI4ZThjZmNkOTI2Mzg0YjZlNWUiLCJuYW1lIjoiUHJvZ3JhbW1pbmcgSGVyb3MiLCJlbWFpbCI6IndlYkBwcm9ncmFtbWluZy1oZXJvLmNvbSIsInBob25lIjoiMTIzNDU2Nzg5MCIsInJvbGUiOiJhZG1pbiIsImFkZHJlc3MiOiIxMjMgTWFpbiBTdHJlZXQsIENpdHksIENvdW50cnkiLCJpYXQiOjE2MjQ1MTY2MTksImV4cCI6MTYyNDUyMDYxOX0.kWrEphO6lE9P5tvzrNBwx0sNogNuXpdyG-YoN9fB1W8",
   "data": {
     "_id": "60629b8e8cfcd926384b6e5e",
-    "name": "Programming Hero",
-    "email": "web@programming-hero.com",
+    "name": "Md. Ariful Islam",
+    "email": "arifibnenam@gmail.com",
     "phone": "1234567890",
     "role": "admin",
     "address": "123 Main Street, City, Country",
-    "createdAt": "2024-06-15T12:00:00Z", // For this, ensure that your model includes the option to enable timestamps
-    "updatedAt": "2024-06-15T12:00:00Z" // For this, ensure that your model includes the option to enable timestamps
+    "createdAt": "2024-06-15T12:00:00Z",
+    "updatedAt": "2024-06-15T12:00:00Z"
   }
 }
 ```
